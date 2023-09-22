@@ -92,10 +92,37 @@ const updateBooks = (req, res) => {
   });
 };
 
+const searchBooks = (req, res) => {
+  const search = req.query.s;
+  if (!search) {
+    return response(500, [], "cannot get data because query not found", res);
+  }
+  const splitSearch = search.split("%20").filter((word) => word);
+  const mapSearch = splitSearch.map((word) => `%${word}%`);
+  const sql = `SELECT * FROM book WHERE title LIKE '${mapSearch}%'`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      return response(500, [], "cannot GET data by search", res);
+    }
+    if (result.length === 0) {
+      return response(404, "bad-request", "data not found", res);
+    } else {
+      const response2 = result.map((data) => {
+        if (data.cover) {
+          data.coverURL = `http://localhost:3001/img/cover/${data.cover}`;
+        }
+        return data;
+      });
+      response(200, response2, "success GET data", res);
+    }
+  });
+};
+
 module.exports = {
   getAllBooks,
   getAllBooksById,
   createBooks,
   deleteBooks,
   updateBooks,
+  searchBooks,
 };

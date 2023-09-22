@@ -1,7 +1,6 @@
-import { Fragment } from "react";
-import DataBooks from "../component/DataBooks";
 import { Tab } from "@headlessui/react";
 import FormAdd from "../component/FormAdd";
+import Books from "../component/container/Books";
 
 const Home = () => {
   return (
@@ -23,7 +22,7 @@ const Home = () => {
               <Tab.Panels>
                 <Tab.Panel>
                   <div className="container mx-auto  md:my-10 p-5 ">
-                    <DataBooks />
+                    <Books />
                   </div>
                 </Tab.Panel>
                 <Tab.Panel>
